@@ -156,12 +156,11 @@ class PDFLoader(threading.Thread):
 
 
 if __name__ == '__main__':
-    cwd_ = os.path.dirname(os.path.abspath(__file__))
-    data_filepath = os.path.join(cwd_, "BestellungORV0000726.pdf")
-    pdf_loader = PDFLoader(data_filepath)
-    pdf_loader.start()
-    pdf_loader.running = False
-    pdf_loader.join()
+    if len(sys.argv) > 1:
+        pdf_loader = PDFLoader(sys.argv[1])
+        pdf_loader.start()
+        pdf_loader.running = False
+        pdf_loader.join()
 
 '''
 # img = cv2.imread('image.jpg')
