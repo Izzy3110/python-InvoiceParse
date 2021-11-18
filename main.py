@@ -132,7 +132,7 @@ class PDFLoader(threading.Thread):
         return convert_from_path(self.file, poppler_path=r"C:\Program Files (x86)\poppler-0.51\bin")
 
     @staticmethod
-    def date_prefix(self):
+    def date_prefix():
         return datetime.now().strftime("%Y%m%d_%H%M%S") + "_"
 
     @staticmethod
