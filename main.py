@@ -1,3 +1,4 @@
+import sys
 import html
 import pytesseract
 import json
@@ -108,17 +109,21 @@ class PDFLoader(threading.Thread):
                 current_page_f.close()
 
     def run(self) -> None:
-
-        self.images = self.pdf_to_img()
-        self.get_pages()
-        if len(self.pages.keys()) > 0:
-            print("got some pages: " + str(len(self.pages.keys())))
-            # for p in self.pages.keys():
-            #    print(self.pages[p])
-            self.write_page_contents_to_file()
+        try:
+            self.images = self.pdf_to_img()
+            self.get_pages()
+            if len(self.pages.keys()) > 0:
+                print("got some pages: " + str(len(self.pages.keys())))
+                # for p in self.pages.keys():
+                #    print(self.pages[p])
+                self.write_page_contents_to_file()
+        except TypeError:
+            if self.images is None:
+                print("error: no file")
+                sys.exit(1)
 
     def ocr_core(self, image):
-        return pytesseract.image_to_string(image, r"C:\Program Files\Tesseract-OCR\tesseract.exe")
+        return pytesseract.image_to_string(image)
 
     def get_pages(self):
         if self.images is not None:
@@ -129,7 +134,7 @@ class PDFLoader(threading.Thread):
             print("error! is None")
 
     def pdf_to_img(self):
-        return convert_from_path(self.file, poppler_path=r"C:\Program Files (x86)\poppler-0.51\bin")
+        return convert_from_path(self.file, poppler_path="/usr/bin")
 
     @staticmethod
     def date_prefix():
